@@ -15,6 +15,7 @@ public class UserConverter {
                 .name(user.getName())
                 .email(user.getEmail())
                 .about(user.getAbout())
+                .ratings(user.getRatings())
                 .build();
 
         return userDto;
@@ -26,6 +27,7 @@ public class UserConverter {
                 .name(userDto.getName())
                 .email(userDto.getEmail())
                 .about(userDto.getAbout())
+                .ratings(userDto.getRatings())
                 .build();
 
         return user;

@@ -1,13 +1,16 @@
 package com.microservices.userservice.service.impl;
 
 import com.microservices.userservice.converter.UserConverter;
+import com.microservices.userservice.dto.Rating;
 import com.microservices.userservice.dto.UserDto;
 import com.microservices.userservice.entity.User;
 import com.microservices.userservice.repository.UserRepo;
 import com.microservices.userservice.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -17,6 +20,8 @@ public class UserServiceImpl implements UserService {
     private UserRepo userRepo;
     @Autowired
     private UserConverter userConverter;
+    @Autowired
+    private RestTemplate restTemplate;
 
     @Override
     public UserDto addUser(UserDto userDto) {
@@ -28,6 +33,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto getUser(String userId) {
         User user = userRepo.findById(userId).get();
+
+        List<Rating> ratingForUser = restTemplate.getForObject("http://localhost:8081/ratings/users/" + user.getUserId(), ArrayList.class);
+        user.setRatings(ratingForUser);
+        userRepo.save(user);
+
         return userConverter.convertEntityToDto(user);
     }
 
