@@ -1,5 +1,6 @@
 package com.microservices.userservice.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 @Getter
@@ -13,4 +14,5 @@ public class Rating {
     private String hotelId;
     private int rating;
     private String remark;
+    private Hotel hotel;
 }
